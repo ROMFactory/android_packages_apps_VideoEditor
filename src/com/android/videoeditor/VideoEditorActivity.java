@@ -200,6 +200,10 @@ public class VideoEditorActivity extends VideoEditorBaseActivity
     private Rect mAddKenBurnsStartRect;
     private Rect mAddKenBurnsEndRect;
     private boolean mRestartPreview;
+
+/*add by huaqin_gongpeicai_001 for save state  -- start*/
+    private boolean mIsplayingbeforepause = false;
+/*add by huaqin_gongpeicai_001 for save state  -- end*/
     private Uri mCaptureMediaUri;
 
     @Override
@@ -444,7 +448,9 @@ public class VideoEditorActivity extends VideoEditorBaseActivity
     public void onPause() {
         super.onPause();
         mResumed = false;
-
+/*add by huaqin_gongpeicai_001 for save state  -- start*/
+         mIsplayingbeforepause =isPreviewPlaying();
+/*add by huaqin_gongpeicai_001 for save state  -- end*/
         // Stop the preview now (we will stop it in surfaceDestroyed(), but
         // that may be too late for releasing resources to other activities)
         stopPreviewThread();
@@ -487,7 +493,10 @@ public class VideoEditorActivity extends VideoEditorBaseActivity
         super.onSaveInstanceState(outState);
 
         outState.putString(STATE_INSERT_AFTER_MEDIA_ITEM_ID, mInsertMediaItemAfterMediaItemId);
-        outState.putBoolean(STATE_PLAYING, isPreviewPlaying() || mRestartPreview);
+/*add by huaqin_gongpeicai_001 for save state  -- start*/
+      //  outState.putBoolean(STATE_PLAYING, isPreviewPlaying() || mRestartPreview);
+        outState.putBoolean(STATE_PLAYING, mIsplayingbeforepause || mRestartPreview);
+/*add by huaqin_gongpeicai_001 for save state  -- end*/
         outState.putParcelable(STATE_CAPTURE_URI, mCaptureMediaUri);
         outState.putInt(STATE_SELECTED_POS_ID, mMediaLayout.getSelectedViewPos());
     }
